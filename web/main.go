@@ -21,6 +21,7 @@ var db, err = sql.Open("mysql", "root:root@/go_course?charset=utf8")
 func main() {
 
 	router := mux.NewRouter()
+	router.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("static/"))))
 	router.HandleFunc("/", HomeHandler)
 
 	fmt.Println(http.ListenAndServe(":8080", router))
