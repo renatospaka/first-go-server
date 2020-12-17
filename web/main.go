@@ -23,8 +23,8 @@ func main() {
 
 	router := mux.NewRouter()
 	router.PathPrefix("/static").Handler(http.StripPrefix("/static", http.FileServer(http.Dir("static/"))))
-	router.HandleFunc("/", HomeHandler)
 	router.HandleFunc("/{id}/view", ViewHandler)
+	router.HandleFunc("/", HomeHandler)
 
 	fmt.Println(http.ListenAndServe(":8080", router))
 }
@@ -62,8 +62,8 @@ func GetPostById(id string) Post {
 
 // HomeHandler handles a route and template
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("templates/index.html"))
-	if err := t.ExecuteTemplate(w, "index.html", GetPosts()); err != nil {
+	t := template.Must(template.ParseFiles("templates/layout.html", "templates/list.html"))
+	if err := t.ExecuteTemplate(w, "layout.html", GetPosts()); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -71,8 +71,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 // ViewHandler shows one post
 func ViewHandler(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	t := template.Must(template.ParseFiles("templates/view.html"))
-	if err := t.ExecuteTemplate(w, "view.html", GetPostById(id)); err != nil {
+	t := template.Must(template.ParseFiles("templates/layout.html", "templates/view.html"))
+	if err := t.ExecuteTemplate(w, "layout.html", GetPostById(id)); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
