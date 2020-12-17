@@ -1,0 +1,25 @@
+#  initiate a mysql container from another project
+cd /home/renatospaka/dev/cursos/fc/t9/devops/docker/
+docker-compose up -d 
+
+# get into container's bash
+docker exec -it db bash
+
+# create database & table into mysql
+mysql -uroot -p 
+create database go_course;
+use go_course;
+
+create table posts (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(50) not null, body text);
+select * from posts;
+
+########
+# install a pkg from github
+go get github.com/go-sql-driver/mysql
+ls -lah /usr/local/go
+ls -lah /usr/local/go/pkg/mod/cache/download/github.com/ ##(?????)
+
+
+########
+# install gorilla
+go get github.com/gorilla/mux
